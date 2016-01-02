@@ -1,4 +1,4 @@
-keep
+[![Build Status](https://travis-ci.org/semen4eg/keep.svg?branch=master)](https://travis-ci.org/semen4eg/keep)
 ====
 
 To set up the project

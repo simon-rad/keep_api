@@ -7,7 +7,7 @@ before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer update
   - php app/console doctrine:database:create --env=test
-  - php app/console doctrine:migrations:migrate --env=test
+  - php app/console doctrine:migrations:migrate --env=test -n
 
 script:
   - phpunit -c app

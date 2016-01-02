@@ -1,0 +1,17 @@
+language: php
+
+php:
+  - 5.6
+
+before_script:
+  - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - composer install
+  - php app/console doctrine:database:create --env=test
+  - php app/console doctrine:migrations:migrate --env=test
+
+script:
+  - phpunit -c app
+
+notifications:
+  email:
+    -  semen4eg@xakep.ru

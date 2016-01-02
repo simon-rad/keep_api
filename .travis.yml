@@ -11,7 +11,3 @@ before_script:
 
 script:
   - phpunit -c app
-
-notifications:
-  email:
-    -  semen4eg@xakep.ru

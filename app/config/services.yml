@@ -4,6 +4,40 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    encoder.json:
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+        private: true
+        tags:
+            - { name: serializer.encoder }
+
+    normalizer.configurator:
+        class: AppBundle\Serializer\NormalizerConfigurator
+
+    annotation.reader:
+        class: Doctrine\Common\Annotations\AnnotationReader
+
+    annotation.loader:
+        class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
+        arguments: ["@annotation.reader"]
+
+    class.metadata.factory:
+        class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
+        arguments: ["@annotation.loader"]
+
+    normalizer.object:
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        private: true
+        configurator: ["@normalizer.configurator", configure]
+        arguments: ["@class.metadata.factory"]
+        tags:
+            - { name: serializer.normalizer }
+
+    serializer:
+        class: Symfony\Component\Serializer\Serializer
+        arguments: [["@normalizer.object"], ["@encoder.json"]]
+
+
+    kernel.listener.onerror:
+        class: AppBundle\EventListener\KernelExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

@@ -5,7 +5,7 @@ php:
 
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
-  - composer install
+  - composer update
   - php app/console doctrine:database:create --env=test
   - php app/console doctrine:migrations:migrate --env=test
 
